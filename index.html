@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAATOG | New State Survivor</title>
+    
+    <link rel="icon" type="image/png" href="https://placehold.co/64x64/ffb800/000000?text=J">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- 1. NEW STATE COLOR PALETTE --- */
+        :root {
+            --ns-yellow: #ffb800;  /* Main UI Color */
+            --ns-dark: #1a1a1a;
+            --ns-black: #050505;
+            --ns-white: #eeeeee;
+            --ns-blue: #00e3ff;    /* Accent Color */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--ns-black);
+            color: var(--ns-white);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- 2. BACKGROUND (TROI MAP STYLE) --- */
+        .bg-wallpaper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.hdqwalls.com/wallpapers/pubg-new-state-4k-ki.jpg') no-repeat center center/cover;
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.95) 20%, rgba(0,0,0,0.6) 100%);
+            z-index: -1;
+        }
+
+        /* --- 3. NAVBAR (LOBBY UI STYLE) --- */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 2000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--ns-yellow);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Logo Styling */
+        .logo-box {
+            display: flex; align-items: center; gap: 10px;
+            padding: 5px 15px; border: 1px solid var(--ns-yellow);
+            background: rgba(255, 184, 0, 0.1);
+            transform: skewX(-15deg);
+        }
+        .logo-text {
+            font-family: 'Teko', sans-serif; font-size: 2.2rem; font-weight: 700;
+            color: white; transform: skewX(15deg); line-height: 1; letter-spacing: 1px;
+            text-transform: uppercase; margin: 0;
+        }
+        .logo-text span { color: var(--ns-yellow); }
+
+        /* Desktop Menu */
+        .nav-menu { display: flex; gap: 30px; list-style: none; }
+        .nav-item {
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem;
+            color: #ccc; text-transform: uppercase; text-decoration: none;
+            letter-spacing: 1px; position: relative; transition: 0.3s;
+            padding: 5px 0; cursor: pointer;
+        }
+        
+        /* Hover Effect */
+        .nav-item::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
+            background: var(--ns-yellow); transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px var(--ns-yellow);
+        }
+        .nav-item:hover { color: var(--ns-white); text-shadow: 0 0 10px var(--ns-yellow); }
+        .nav-item:hover::after { width: 100%; }
+
+        /* Hamburger Icon */
+        .hamburger { 
+            display: none; font-size: 2rem; color: var(--ns-yellow); cursor: pointer; 
+            transition: 0.3s;
+        }
+        .hamburger:hover { transform: scale(1.1); text-shadow: 0 0 15px var(--ns-yellow); }
+        
+        /* Close Button (Hidden on Desktop) */
+        .close-menu { display: none; }
+
+        /* --- 4. HERO SECTION --- */
+        #hero {
+            height: 100vh; display: flex; align-items: center; padding: 0 5%;
+            position: relative; overflow: hidden;
+        }
+        
+        /* Left Panel (Text Area) */
+        .lobby-ui-left {
+            width: 50%; min-width: 350px; z-index: 5; position: relative;
+            padding: 40px; border-left: 3px solid var(--ns-yellow);
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .rank-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255, 184, 0, 0.1); padding: 5px 15px; border: 1px solid var(--ns-yellow);
+            margin-bottom: 20px; font-weight: bold; color: var(--ns-yellow); letter-spacing: 2px;
+        }
+
+        .survivor-name {
+            font-family: 'Teko', sans-serif; font-size: 5rem; line-height: 0.9;
+            text-transform: uppercase; margin-bottom: 10px; color: white;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        
+        .role-text {
+            font-size: 1.3rem; color: #ddd; text-transform: uppercase; margin-bottom: 30px;
+            font-weight: 600; letter-spacing: 1px;
+        }
+
+        /* Game Buttons */
+        .btn-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .game-btn {
+            display: inline-block; padding: 12px 40px; 
+            background: var(--ns-yellow); color: black;
+            font-family: 'Teko', sans-serif; font-size: 1.4rem; font-weight: 700;
+            text-decoration: none; text-transform: uppercase;
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+            transition: 0.2s; 
+        }
+        .game-btn:hover { transform: scale(1.05); background: white; box-shadow: 0 0 15px white; }
+        
+        .game-btn-outline {
+            background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.3);
+        }
+        .game-btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+        /* Character Image Area */
+        .character-container {
+            position: absolute; right: 0; bottom: 0; width: 50%; height: 90vh;
+            display: flex; align-items: flex-end; justify-content: center;
+            z-index: 1; pointer-events: none;
+        }
+        .character-img {
+            max-height: 100%; max-width: 100%; object-fit: contain;
+            filter: drop-shadow(-10px 0 20px rgba(0,0,0,0.8));
+        }
+
+        /* --- 5. SECTIONS --- */
+        section { padding: 80px 5%; position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; }
+        
+        .section-header {
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px;
+        }
+        .header-box { width: 10px; height: 30px; background: var(--ns-yellow); }
+        .header-title { font-family: 'Teko'; font-size: 2.5rem; text-transform: uppercase; line-height: 1; }
+
+        /* --- STATS --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        
+        .stat-panel {
+            background: rgba(20, 20, 20, 0.85); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px; display: flex; flex-direction: column;
+            border-left: 3px solid var(--ns-blue); backdrop-filter: blur(5px); transition: 0.3s;
+        }
+        .stat-panel:hover { transform: translateY(-5px); border-color: var(--ns-yellow); }
+        .stat-value { font-family: 'Teko'; font-size: 3rem; line-height: 1; color: white; }
+        .stat-label { font-size: 0.9rem; color: #888; text-transform: uppercase; }
+
+        /* --- VIDEO GRID --- */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        
+        .video-item {
+            background: rgba(0,0,0,0.6); border: 1px solid #333;
+            transition: 0.2s; cursor: pointer;
+        }
+        .video-item:hover { border-color: var(--ns-yellow); }
+        .thumb-box { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+        .thumb-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .video-item:hover img { opacity: 1; }
+        .vid-info { padding: 15px; }
+        .vid-title { font-weight: 700; font-size: 1.1rem; line-height: 1.2; margin-bottom: 5px; }
+
+        /* --- CONTACT --- */
+        .chat-box {
+            background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+            max-width: 600px; padding: 30px; margin: 0 auto;
+        }
+        .chat-input {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid #555;
+            color: white; padding: 10px 0; font-family: 'Rajdhani'; font-size: 1.2rem;
+            margin-bottom: 25px; outline: none;
+        }
+        .chat-input:focus { border-color: var(--ns-yellow); }
+        .send-btn {
+            background: var(--ns-white); color: black; padding: 10px 40px; border: none;
+            font-weight: bold; text-transform: uppercase; cursor: pointer; float: right;
+            clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%);
+        }
+        .send-btn:hover { background: var(--ns-yellow); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: black; padding: 30px; text-align: center; border-top: 2px solid var(--ns-yellow);
+        }
+        .socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
+        .social-link { color: #888; font-size: 1.5rem; transition: 0.3s; }
+        .social-link:hover { color: var(--ns-yellow); transform: scale(1.2); }
+
+        /* --- MOBILE MENU & RESPONSIVE FIXES --- */
+        @media (max-width: 900px) {
+            .hamburger { display: block; }
+
+            /* Mobile Drawer Menu (Right Slide) */
+            .nav-menu {
+                position: fixed; top: 0; right: -100%; /* Hidden */
+                width: 80%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98); /* Solid Dark */
+                border-left: 2px solid var(--ns-yellow);
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: 40px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1500;
+            }
+            .nav-menu.active { right: 0; /* Slide In */ }
+
+            /* Mobile Menu Items */
+            .nav-item {
+                font-size: 2rem; font-family: 'Teko', sans-serif;
+                color: white; padding: 10px 40px;
+                border: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center;
+                background: linear-gradient(90deg, transparent, rgba(255,184,0,0.1), transparent);
+            }
+            .nav-item:hover { background: var(--ns-yellow); color: black; }
+
+            /* Close Button inside Menu */
+            .close-menu {
+                display: block; position: absolute; top: 30px; right: 30px;
+                font-size: 2.5rem; color: #555; cursor: pointer; transition: 0.3s;
+            }
+            .close-menu:hover { color: var(--ns-yellow); transform: rotate(90deg); }
+
+            /* Hero Adjustments */
+            #hero { flex-direction: column; justify-content: center; text-align: center; padding-top: 100px; }
+            .lobby-ui-left { width: 100%; background: rgba(0,0,0,0.5); padding: 20px; border-left: none; border-top: 2px solid var(--ns-yellow); }
+            .survivor-name { font-size: 3.5rem; }
+            
+            /* Character Visibility Fix */
+            .character-container {
+                position: relative; width: 100%; height: 350px;
+                right: auto; bottom: auto; opacity: 0.7; /* Faded slightly so text pops */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-wallpaper"></div>
+    <div class="bg-overlay"></div>
+
+    <nav>
+        <a href="#" style="text-decoration:none;">
+            <div class="logo-box">
+                <div class="logo-text">JAAT<span>OG</span></div>
+            </div>
+        </a>
+        
+        <div class="hamburger" id="ham-btn"><i class="fas fa-bars"></i></div>
+
+        <ul class="nav-menu" id="nav-list">
+            <div class="close-menu" id="close-btn">&times;</div>
+            
+            <li><a href="#hero" class="nav-item">LOBBY</a></li>
+            <li><a href="#stats" class="nav-item">STATS</a></li>
+            <li><a href="#videos" class="nav-item">VIDEOS</a></li>
+            <li><a href="#contact" class="nav-item">CHAT</a></li>
+        </ul>
+    </nav>
+
+    <div id="hero">
+        <div class="lobby-ui-left">
+            <div class="rank-badge"><i class="fas fa-medal"></i> CONQUEROR</div>
+            <h1 class="survivor-name">JAATOG</h1>
+            <div class="role-text">New State Mobile Creator</div>
+            
+            <div class="btn-group">
+                <a href="https://youtube.com/channel/UCxu1GhUek32Jxa5W8th5OIg?sub_confirmation=1" target="_blank" class="game-btn">
+                    START MATCH
+                </a>
+                <a href="#videos" class="game-btn game-btn-outline">
+                    INVENTORY
+                </a>
+            </div>
+        </div>
+
+        <div class="character-container">
+            <img src="https://purepng.com/public/uploads/large/purepng.com-pubg-playerpubgplayerbattlegroundsplayerunknowns-battlegrounds-1251513760451s75o3.png" alt="Character" class="character-img">
+        </div>
+    </div>
+
+    <section id="stats">
+        <div class="section-header">
+            <div class="header-box"></div>
+            <div class="header-title">CAREER RESULTS</div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-panel">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value">99.9%</span>
+            </div>
+            <a href="https://www.youtube.com/@imjaatog/community" target="_blank" style="text-decoration:none;">
+                <div class="stat-panel" style="border-left-color: var(--ns-yellow);">
+                    <span class="stat-label">Clan</span>
+                    <span class="stat-value" style="color:var(--ns-yellow)">FAM</span>
+                </div>
+            </a>
+            <div class="stat-panel">
+                <span class="stat-label">Uploads</span>
+                <span class="stat-value">150+</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="videos">
+        <div class="section-header">
+            <div class="header-box" style="background:var(--ns-blue)"></div>
+            <div class="header-title">HIGHLIGHTS</div>
+        </div>
+        <div class="video-grid" id="video-feed">
+            <p style="color:#888;">Fetching Match Data...</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="section-header">
+            <div class="header-box"></div>
+            <div class="header-title">WORLD CHAT</div>
+        </div>
+        <div class="chat-box">
+            <form action="https://formspree.io/f/YOUR_ID" method="POST">
+                <input type="text" name="name" class="chat-input" placeholder="NICKNAME" required>
+                <input type="email" name="email" class="chat-input" placeholder="EMAIL" required>
+                <textarea name="message" class="chat-input" rows="1" placeholder="MESSAGE..." required></textarea>
+                <button type="submit" class="send-btn">SEND</button>
+                <div style="clear:both;"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="socials">
+            <a href="https://youtube.com/@imjaatog" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="https://instagram.com/imjaatog" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/imjaatog" target="_blank" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+        <p style="color:#666; font-size:0.8rem;">JAATOG © 2026</p>
+    </footer>
+
+    <script>
+        // MENU VARIABLES
+        const ham = document.getElementById('ham-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const list = document.getElementById('nav-list');
+        const links = document.querySelectorAll('.nav-item');
+
+        // OPEN MENU
+        ham.addEventListener('click', () => {
+            list.classList.add('active');
+        });
+
+        // CLOSE MENU
+        closeBtn.addEventListener('click', () => {
+            list.classList.remove('active');
+        });
+
+        // CLOSE ON LINK CLICK
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                list.classList.remove('active');
+            });
+        });
+
+        // VIDEO FETCH
+        const CID = 'UCxu1GhUek32Jxa5W8th5OIg';
+        async function loadVids() {
+            const feed = document.getElementById('video-feed');
+            try {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${CID}`);
+                const data = await res.json();
+                if(data.status === 'ok') {
+                    feed.innerHTML = '';
+                    data.items.slice(0, 3).forEach(v => {
+                        const id = v.guid.split(':')[2];
+                        const date = new Date(v.pubDate).toLocaleDateString();
+                        feed.innerHTML += `
+                            <div class="video-item">
+                                <a href="${v.link}" target="_blank" style="text-decoration:none; color:inherit;">
+                                    <div class="thumb-box">
+                                        <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg">
+                                        <i class="fas fa-play-circle play-icon" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:3rem; color:white;"></i>
+                                    </div>
+                                    <div class="vid-info">
+                                        <div class="vid-title">${v.title}</div>
+                                        <div style="color:var(--ns-yellow); font-size:0.8rem;">${date}</div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    });
+                }
+            } catch(e) { feed.innerHTML = '<p>Check Youtube for Videos.</p>'; }
+        }
+        loadVids();
+    </script>
+</body>
+</html>
