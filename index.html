@@ -15,11 +15,11 @@
     <style>
         /* --- 1. NEW STATE COLOR PALETTE --- */
         :root {
-            --ns-yellow: #ffb800;  /* Main UI Color */
+            --ns-yellow: #ffb800;  
             --ns-dark: #1a1a1a;
             --ns-black: #050505;
             --ns-white: #eeeeee;
-            --ns-blue: #00e3ff;    /* Accent Color */
+            --ns-blue: #00e3ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. BACKGROUND (TROI MAP STYLE) --- */
+        /* --- 2. BACKGROUND --- */
         .bg-wallpaper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://images.hdqwalls.com/wallpapers/pubg-new-state-4k-ki.jpg') no-repeat center center/cover;
@@ -43,7 +43,7 @@
             z-index: -1;
         }
 
-        /* --- 3. NAVBAR (LOBBY UI STYLE) --- */
+        /* --- 3. NAVBAR --- */
         nav {
             position: fixed; top: 0; width: 100%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
@@ -54,12 +54,10 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
-        /* Logo Styling */
         .logo-box {
             display: flex; align-items: center; gap: 10px;
             padding: 5px 15px; border: 1px solid var(--ns-yellow);
-            background: rgba(255, 184, 0, 0.1);
-            transform: skewX(-15deg);
+            background: rgba(255, 184, 0, 0.1); transform: skewX(-15deg);
         }
         .logo-text {
             font-family: 'Teko', sans-serif; font-size: 2.2rem; font-weight: 700;
@@ -68,16 +66,12 @@
         }
         .logo-text span { color: var(--ns-yellow); }
 
-        /* Desktop Menu */
         .nav-menu { display: flex; gap: 30px; list-style: none; }
         .nav-item {
             font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem;
             color: #ccc; text-transform: uppercase; text-decoration: none;
-            letter-spacing: 1px; position: relative; transition: 0.3s;
-            padding: 5px 0; cursor: pointer;
+            letter-spacing: 1px; position: relative; transition: 0.3s; padding: 5px 0;
         }
-        
-        /* Hover Effect */
         .nav-item::after {
             content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
             background: var(--ns-yellow); transition: 0.3s ease-in-out;
@@ -86,14 +80,7 @@
         .nav-item:hover { color: var(--ns-white); text-shadow: 0 0 10px var(--ns-yellow); }
         .nav-item:hover::after { width: 100%; }
 
-        /* Hamburger Icon */
-        .hamburger { 
-            display: none; font-size: 2rem; color: var(--ns-yellow); cursor: pointer; 
-            transition: 0.3s;
-        }
-        .hamburger:hover { transform: scale(1.1); text-shadow: 0 0 15px var(--ns-yellow); }
-        
-        /* Close Button (Hidden on Desktop) */
+        .hamburger { display: none; font-size: 2rem; color: var(--ns-yellow); cursor: pointer; }
         .close-menu { display: none; }
 
         /* --- 4. HERO SECTION --- */
@@ -102,7 +89,6 @@
             position: relative; overflow: hidden;
         }
         
-        /* Left Panel (Text Area) */
         .lobby-ui-left {
             width: 50%; min-width: 350px; z-index: 5; position: relative;
             padding: 40px; border-left: 3px solid var(--ns-yellow);
@@ -126,7 +112,6 @@
             font-weight: 600; letter-spacing: 1px;
         }
 
-        /* Game Buttons */
         .btn-group { display: flex; gap: 20px; flex-wrap: wrap; }
         .game-btn {
             display: inline-block; padding: 12px 40px; 
@@ -143,7 +128,7 @@
         }
         .game-btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
 
-        /* Character Image Area */
+        /* --- CHARACTER IMAGE (UPDATED) --- */
         .character-container {
             position: absolute; right: 0; bottom: 0; width: 50%; height: 90vh;
             display: flex; align-items: flex-end; justify-content: center;
@@ -164,9 +149,8 @@
         .header-box { width: 10px; height: 30px; background: var(--ns-yellow); }
         .header-title { font-family: 'Teko'; font-size: 2.5rem; text-transform: uppercase; line-height: 1; }
 
-        /* --- STATS --- */
+        /* STATS */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        
         .stat-panel {
             background: rgba(20, 20, 20, 0.85); border: 1px solid rgba(255,255,255,0.1);
             padding: 20px; display: flex; flex-direction: column;
@@ -176,12 +160,10 @@
         .stat-value { font-family: 'Teko'; font-size: 3rem; line-height: 1; color: white; }
         .stat-label { font-size: 0.9rem; color: #888; text-transform: uppercase; }
 
-        /* --- VIDEO GRID --- */
+        /* VIDEO GRID */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        
         .video-item {
-            background: rgba(0,0,0,0.6); border: 1px solid #333;
-            transition: 0.2s; cursor: pointer;
+            background: rgba(0,0,0,0.6); border: 1px solid #333; transition: 0.2s; cursor: pointer;
         }
         .video-item:hover { border-color: var(--ns-yellow); }
         .thumb-box { position: relative; aspect-ratio: 16/9; overflow: hidden; }
@@ -190,7 +172,7 @@
         .vid-info { padding: 15px; }
         .vid-title { font-weight: 700; font-size: 1.1rem; line-height: 1.2; margin-bottom: 5px; }
 
-        /* --- CONTACT --- */
+        /* --- CONTACT (FIXED FOR GMAIL) --- */
         .chat-box {
             background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
             max-width: 600px; padding: 30px; margin: 0 auto;
@@ -208,7 +190,7 @@
         }
         .send-btn:hover { background: var(--ns-yellow); }
 
-        /* --- FOOTER --- */
+        /* FOOTER */
         footer {
             background: black; padding: 30px; text-align: center; border-top: 2px solid var(--ns-yellow);
         }
@@ -216,47 +198,31 @@
         .social-link { color: #888; font-size: 1.5rem; transition: 0.3s; }
         .social-link:hover { color: var(--ns-yellow); transform: scale(1.2); }
 
-        /* --- MOBILE MENU & RESPONSIVE FIXES --- */
+        /* MOBILE FIXES */
         @media (max-width: 900px) {
             .hamburger { display: block; }
-
-            /* Mobile Drawer Menu (Right Slide) */
             .nav-menu {
-                position: fixed; top: 0; right: -100%; /* Hidden */
-                width: 80%; height: 100vh;
-                background: rgba(5, 5, 5, 0.98); /* Solid Dark */
-                border-left: 2px solid var(--ns-yellow);
+                position: fixed; top: 0; right: -100%; width: 80%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--ns-yellow);
                 flex-direction: column; justify-content: center; align-items: center;
-                gap: 40px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                z-index: 1500;
+                gap: 40px; transition: 0.4s; z-index: 1500;
             }
-            .nav-menu.active { right: 0; /* Slide In */ }
-
-            /* Mobile Menu Items */
+            .nav-menu.active { right: 0; }
             .nav-item {
                 font-size: 2rem; font-family: 'Teko', sans-serif;
-                color: white; padding: 10px 40px;
-                border: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center;
+                color: white; padding: 10px 40px; border: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center;
                 background: linear-gradient(90deg, transparent, rgba(255,184,0,0.1), transparent);
             }
             .nav-item:hover { background: var(--ns-yellow); color: black; }
-
-            /* Close Button inside Menu */
             .close-menu {
                 display: block; position: absolute; top: 30px; right: 30px;
-                font-size: 2.5rem; color: #555; cursor: pointer; transition: 0.3s;
+                font-size: 2.5rem; color: #555; cursor: pointer;
             }
-            .close-menu:hover { color: var(--ns-yellow); transform: rotate(90deg); }
-
-            /* Hero Adjustments */
             #hero { flex-direction: column; justify-content: center; text-align: center; padding-top: 100px; }
             .lobby-ui-left { width: 100%; background: rgba(0,0,0,0.5); padding: 20px; border-left: none; border-top: 2px solid var(--ns-yellow); }
             .survivor-name { font-size: 3.5rem; }
-            
-            /* Character Visibility Fix */
             .character-container {
-                position: relative; width: 100%; height: 350px;
-                right: auto; bottom: auto; opacity: 0.7; /* Faded slightly so text pops */
+                position: relative; width: 100%; height: 350px; right: auto; bottom: auto; opacity: 0.7;
             }
         }
     </style>
@@ -277,7 +243,6 @@
 
         <ul class="nav-menu" id="nav-list">
             <div class="close-menu" id="close-btn">&times;</div>
-            
             <li><a href="#hero" class="nav-item">LOBBY</a></li>
             <li><a href="#stats" class="nav-item">STATS</a></li>
             <li><a href="#videos" class="nav-item">VIDEOS</a></li>
@@ -302,7 +267,7 @@
         </div>
 
         <div class="character-container">
-            <img src="https://purepng.com/public/uploads/large/purepng.com-pubg-playerpubgplayerbattlegroundsplayerunknowns-battlegrounds-1251513760451s75o3.png" alt="Character" class="character-img">
+            <img src="https://i.ibb.co/yJ18hmj/BDE0-EEA4-CDB7-414-B-B357-949-E1909-A77-C.png" alt="JaatOG Character" class="character-img">
         </div>
     </div>
 
@@ -335,7 +300,7 @@
             <div class="header-title">HIGHLIGHTS</div>
         </div>
         <div class="video-grid" id="video-feed">
-            <p style="color:#888;">Fetching Match Data...</p>
+            <p style="color:#888;">Fetching Data...</p>
         </div>
     </section>
 
@@ -345,9 +310,9 @@
             <div class="header-title">WORLD CHAT</div>
         </div>
         <div class="chat-box">
-            <form action="https://formspree.io/f/YOUR_ID" method="POST">
+            <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST">
                 <input type="text" name="name" class="chat-input" placeholder="NICKNAME" required>
-                <input type="email" name="email" class="chat-input" placeholder="EMAIL" required>
+                <input type="email" name="email" class="chat-input" placeholder="EMAIL (For Reply)" required>
                 <textarea name="message" class="chat-input" rows="1" placeholder="MESSAGE..." required></textarea>
                 <button type="submit" class="send-btn">SEND</button>
                 <div style="clear:both;"></div>
@@ -365,28 +330,15 @@
     </footer>
 
     <script>
-        // MENU VARIABLES
+        // MENU
         const ham = document.getElementById('ham-btn');
         const closeBtn = document.getElementById('close-btn');
         const list = document.getElementById('nav-list');
         const links = document.querySelectorAll('.nav-item');
 
-        // OPEN MENU
-        ham.addEventListener('click', () => {
-            list.classList.add('active');
-        });
-
-        // CLOSE MENU
-        closeBtn.addEventListener('click', () => {
-            list.classList.remove('active');
-        });
-
-        // CLOSE ON LINK CLICK
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                list.classList.remove('active');
-            });
-        });
+        ham.addEventListener('click', () => { list.classList.add('active'); });
+        closeBtn.addEventListener('click', () => { list.classList.remove('active'); });
+        links.forEach(link => { link.addEventListener('click', () => { list.classList.remove('active'); }); });
 
         // VIDEO FETCH
         const CID = 'UCxu1GhUek32Jxa5W8th5OIg';
@@ -416,7 +368,7 @@
                         `;
                     });
                 }
-            } catch(e) { feed.innerHTML = '<p>Check Youtube for Videos.</p>'; }
+            } catch(e) { feed.innerHTML = '<p>Offline.</p>'; }
         }
         loadVids();
     </script>
